@@ -54,7 +54,9 @@ GameManager.prototype.setup = function () {
   this.keepPlaying = false;
   
   var storage = localStorage.getItem('2048Grid');
-  if (!storage || !this.fromJSON(storage)) {
+  try {
+    this.fromJSON(storage);
+  } catch (e) {
     // Add the initial tiles
     this.addStartTiles();
     // Update the actuator

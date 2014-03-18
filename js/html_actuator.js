@@ -149,6 +149,6 @@ HTMLActuator.prototype.updateSave = function (gm) {
   var url = meta + btoa(atob(data) + '\0\0\0\0{' + save + '}');
   this.saveGame.href = url;
   this.saveGameImage.src = url;
-  if (gm.keepPlaying) localStorage.setItem('2048Grid', game);
+  if (!gm.over) localStorage.setItem('2048Grid', game);
   else localStorage.removeItem('2048Grid');
 }
