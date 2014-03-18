@@ -51,12 +51,14 @@ GameManager.prototype.setup = function () {
   this.over        = false;
   this.won         = false;
   this.keepPlaying = false;
-
-  // Add the initial tiles
-  this.addStartTiles();
-
-  // Update the actuator
-  this.actuate();
+  
+  var storage = localStorage.getItem('2048Grid');
+  if (!storage || !this.fromJSON(storage)) {
+    // Add the initial tiles
+    this.addStartTiles();
+    // Update the actuator
+    this.actuate();
+  }
 };
 
 // Set up the initial tiles to start the game with

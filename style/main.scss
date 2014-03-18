@@ -109,7 +109,7 @@ h1.title {
 
 .save-load {
   display: block;
-  .save-game, .load-game {
+  .save-game, .load-game, .restart-game {
     display: inline-block;
     background: darken($game-container-background, 20%);
     border-radius: 3px;
@@ -121,6 +121,10 @@ h1.title {
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
+    @include smaller($mobile-threshold) {
+      font-size: 16px;
+      padding: 5px 10px;
+    }
   }
   
   .load-game input {

@@ -94,7 +94,7 @@ h1.title {
 
 .save-load {
   display: block; }
-  .save-load .save-game, .save-load .load-game {
+  .save-load .save-game, .save-load .load-game, .save-load .restart-game {
     display: inline-block;
     background: #8f7966;
     border-radius: 3px;
@@ -106,6 +106,10 @@ h1.title {
     font-size: 24px;
     font-weight: bold;
     cursor: pointer; }
+    @media screen and (max-width: 520px) {
+      .save-load .save-game, .save-load .load-game, .save-load .restart-game {
+        font-size: 16px;
+        padding: 5px 10px; } }
   .save-load .load-game input {
     width: 1px;
     opacity: 0; }
