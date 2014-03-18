@@ -24,8 +24,7 @@ SaveImage.prototype.generate = function (cells, edge) {
       context.fillRect(x * edge, y * edge, edge, edge);
     }
   }
-  context.font = edge + 'px Clear Sans';
   context.fillStyle = '#333';
-  context.fillText('2048', width / 2, height / 2);
+  context.fillText("‮8402‭", width >> 1, height >> 1);
   return canvas.toDataURL('image/jpeg');
 };

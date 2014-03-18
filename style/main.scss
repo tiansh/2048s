@@ -192,6 +192,7 @@ hr {
 
 // Game field mixin used to render CSS at different width
 @mixin game-field {
+
   .game-container {
     margin-top: 40px;
     position: relative;
@@ -209,6 +210,20 @@ hr {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+
+    .game-save-image {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 90;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+    }
+
 
     .game-message {
       display: none;
@@ -243,9 +258,9 @@ hr {
         margin-left: 9px;
         // margin-top: 59px;
 
-	&.keep-playing-button {
-	  display: none;
-	}
+        &.keep-playing-button {
+          display: none;
+        }
       }
 
       @include animation(fade-in 800ms ease $transition-speed * 12);
@@ -255,9 +270,9 @@ hr {
         background: rgba($tile-gold-color, .5);
         color: $bright-text-color;
 
-	a.keep-playing-button {
-	  display: inline-block;
-	}
+        a.keep-playing-button {
+          display: inline-block;
+        }
       }
 
       &.game-won, &.game-over {

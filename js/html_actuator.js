@@ -4,6 +4,7 @@ function HTMLActuator() {
   this.bestContainer    = document.querySelector(".best-container");
   this.messageContainer = document.querySelector(".game-message");
   this.saveGame         = document.querySelector(".save-game");
+  this.saveGameImage    = document.querySelector(".game-save-image");
 
   this.score = 0;
 }
@@ -140,9 +141,11 @@ HTMLActuator.prototype.clearMessage = function () {
 };
 
 HTMLActuator.prototype.updateSave = function (gm) {
-  var img = (new SaveImage).generate(gm.grid.cells, 16);
+  var img = (new SaveImage).generate(gm.grid.cells, 10);
   var meta = img.slice(0, img.indexOf(',') + 1);
   var data = img.slice(img.indexOf(',') + 1);
   var save = btoa(unescape(encodeURIComponent(JSON.stringify(gm)))); 
-  this.saveGame.href = meta + btoa(atob(data) + '\0\0\0\0{' + save + '}');
+  var url = meta + btoa(atob(data) + '\0\0\0\0{' + save + '}');
+  this.saveGame.href = url;
+  this.saveGameImage.src = url;
 }

@@ -63,18 +63,24 @@ KeyboardInputManager.prototype.listen = function () {
 
   var loadGameFile = document.querySelector(".load-game-file");
   loadGameFile.addEventListener('change', function (e) {
-    var reader = new FileReader();
     var file = loadGameFile.files[0];
-    reader.addEventListener('load', function () {
-      self.loadGame.apply(self, [reader.result]);
-    });
-    if (file) reader.readAsText(file);
+    self.readFile(file);
     loadGameFile.value = '';
   });
+  var gameContainer = document.querySelector(".game-container");
+  gameContainer.addEventListener('drop', function (e) {
+    var files = e.dataTransfer.files;
+    if (files.length === 1) self.readFile(files[0]);
+    e.stopPropagation(); e.preventDefault();
+  }, false);
+  gameContainer.addEventListener('dragover', function (e) {
+    e.stopPropagation(); e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  }, false);
+
 
   // Listen to swipe events
   var touchStartClientX, touchStartClientY;
-  var gameContainer = document.getElementsByClassName("game-container")[0];
 
   gameContainer.addEventListener("touchstart", function (event) {
     if (event.touches.length > 1) return;
@@ -116,4 +122,12 @@ KeyboardInputManager.prototype.keepPlaying = function (event) {
 
 KeyboardInputManager.prototype.loadGame = function (loadData) {
   this.emit("loadGame", loadData);
+}
+
+KeyboardInputManager.prototype.readFile = function (file) {
+  var self = this, reader = new FileReader();
+  reader.addEventListener('load', function () {
+    self.loadGame.apply(self, [reader.result]);
+  });
+  if (file) reader.readAsText(file);
 }
