@@ -61,6 +61,17 @@ KeyboardInputManager.prototype.listen = function () {
   keepPlaying.addEventListener("click", this.keepPlaying.bind(this));
   keepPlaying.addEventListener("touchend", this.keepPlaying.bind(this));
 
+  var loadGameFile = document.querySelector(".load-game-file");
+  loadGameFile.addEventListener('change', function (e) {
+    var reader = new FileReader();
+    var file = loadGameFile.files[0];
+    reader.addEventListener('load', function () {
+      self.loadGame.apply(self, [reader.result]);
+    });
+    if (file) reader.readAsText(file);
+    loadGameFile.value = '';
+  });
+
   // Listen to swipe events
   var touchStartClientX, touchStartClientY;
   var gameContainer = document.getElementsByClassName("game-container")[0];
@@ -102,3 +113,7 @@ KeyboardInputManager.prototype.keepPlaying = function (event) {
   event.preventDefault();
   this.emit("keepPlaying");
 };
+
+KeyboardInputManager.prototype.loadGame = function (loadData) {
+  this.emit("loadGame", loadData);
+}

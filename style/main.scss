@@ -107,6 +107,28 @@ h1.title {
   }
 }
 
+.save-load {
+  display: block;
+  .save-game, .load-game {
+    display: inline-block;
+    background: darken($game-container-background, 20%);
+    border-radius: 3px;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: $bright-text-color;
+    height: 40px;
+    line-height: 42px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .load-game input {
+    width: 1px;
+    opacity: 0;
+  }
+}
+
 .score-container:after {
   content: "Score";
 }

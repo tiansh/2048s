@@ -1,8 +1,6 @@
 function Grid(size) {
   this.size = size;
-
   this.cells = [];
-
   this.build();
 }
 
@@ -82,3 +80,7 @@ Grid.prototype.withinBounds = function (position) {
   return position.x >= 0 && position.x < this.size &&
          position.y >= 0 && position.y < this.size;
 };
+
+Grid.prototype.toJSON = function () {
+  return this.cells.reduce(function (x, y) { return x.concat(y); })
+}

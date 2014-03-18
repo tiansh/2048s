@@ -9,6 +9,7 @@ function GameManager(size, InputManager, Actuator, ScoreManager) {
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+  this.inputManager.on("loadGame", this.loadGame.bind(this));
 
   this.setup();
 }
@@ -23,6 +24,15 @@ GameManager.prototype.restart = function () {
 GameManager.prototype.keepPlaying = function () {
   this.keepPlaying = true;
   this.actuator.continue();
+};
+
+// Load game
+GameManager.prototype.loadGame = function (loadData) {
+  try {
+    this.fromJSON(atob(loadData.match(/{([^{}]*)}$/)[1]));
+  } catch (e) {
+    alert('Failed to load your saving, the file may be broken.');
+  }
 };
 
 GameManager.prototype.isGameTerminated = function () {
@@ -67,7 +77,9 @@ GameManager.prototype.addRandomTile = function () {
 };
 
 // Sends the updated grid to the actuator
-GameManager.prototype.actuate = function () {
+GameManager.prototype.actuate = function (isLoad) {
+  isLoad = isLoad || false;
+
   if (this.scoreManager.get() < this.score) {
     this.scoreManager.set(this.score);
   }
@@ -78,8 +90,9 @@ GameManager.prototype.actuate = function () {
     won:        this.won,
     bestScore:  this.scoreManager.get(),
     terminated: this.isGameTerminated()
-  });
+  }, isLoad);
 
+  this.actuator.updateSave(this);
 };
 
 // Save all tile positions and remove merger info
@@ -243,3 +256,28 @@ GameManager.prototype.tileMatchesAvailable = function () {
 GameManager.prototype.positionsEqual = function (first, second) {
   return first.x === second.x && first.y === second.y;
 };
+
+GameManager.prototype.saving = ['grid', 'score', 'over', 'won', 'keepPlaying'];
+
+GameManager.prototype.toJSON = function () {
+  var copy = {}, self = this;
+  this.saving.map(function (k) { copy[k] = self[k]; });
+  return copy;
+};
+
+GameManager.prototype.fromJSON = function (loadData) {
+  var self = this;
+  var temp = {};
+  var copy = JSON.parse(loadData);
+  this.saving.map(function (k) { temp[k] = copy[k]; });
+  temp.grid = new Grid(this.size);
+  copy.grid.forEach(function (value, pos) {
+    if (!value) return;
+    pos = { 'x': pos >> 2, 'y': pos & 3 };
+    temp.grid.cells[pos.x][pos.y] = new Tile(pos, value);
+  });
+  this.saving.map(function (k) { self[k] = temp[k]; });
+  this.actuator.continue();
+  this.actuate(true);
+}
+
