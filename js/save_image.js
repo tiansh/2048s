@@ -13,8 +13,6 @@ SaveImage.prototype.generate = function (cells, edge) {
   var height = edge * cells[0].length;
   canvas.height = height; canvas.width = width;
   var context = canvas.getContext('2d');
-  context.fillStyle ='#fff';
-  context.fillRect(0, 0, width, height);
   context.textAlign = 'center';
   context.textBaseline = 'middle';
   for (var x = 0; x < cells.length; x++) {
@@ -26,5 +24,5 @@ SaveImage.prototype.generate = function (cells, edge) {
   }
   context.fillStyle = '#333';
   context.fillText("‮8402‭", width >> 1, height >> 1);
-  return canvas.toDataURL('image/jpeg');
+  return canvas.toDataURL('image/png');
 };
